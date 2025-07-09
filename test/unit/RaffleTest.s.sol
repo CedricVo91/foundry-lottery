@@ -95,7 +95,5 @@ contract RaffleTest is Test {
         raffle.enterRaffle{value: entranceFee}();
 
     }
-
-
-
+    
 }
