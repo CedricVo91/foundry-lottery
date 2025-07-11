@@ -51,6 +51,7 @@ contract Raffle is VRFConsumerBaseV2Plus  {
     /* Events */
     event RaffleEntered(address indexed participant); // indexed so e.g. a frontend can easily find the "topics" part of log, not has to go through the "data" part of log
     event WinnerPicked(address indexed winner);
+    event RequestedRaffleWinner(uint256 indexed requestId);
 
     constructor(
         uint256 entranceFee, 
@@ -138,7 +139,10 @@ contract Raffle is VRFConsumerBaseV2Plus  {
             });
 
         // we request the random word from chainlinks VRF service and don't wait for any reply, we exit function immediately
-        s_vrfCoordinator.requestRandomWords(request);
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(request); // ?? how can we call s_vrfCoordinator if we havent defined it anywhere in the contract??
+        // the below is redundant as the vrfCoordinator also emits the request id if we go into the code of it!
+        // just for testing purposes repeated
+        emit RequestedRaffleWinner(requestId);
     }
 
     // The chainlink vrf oracle calls a designated callback function (e.g., `fulfillRandomWords`) on the consuming contract, delivering the results.
@@ -180,6 +184,14 @@ contract Raffle is VRFConsumerBaseV2Plus  {
 
     function getParticipant(uint256 indexOfParticipant) external view returns (address) {
         return s_participants[indexOfParticipant];
+    }
+
+    function getLastTimeStamp() external view returns (uint256) {
+        return s_lastTimeStamp;
+    }
+
+    function getRecentWinner() external view returns (address) {
+        return s_recentWinner;
     }
 
 }
