@@ -9,7 +9,11 @@ import {CreateSubscription, FundSubscription, AddConsumer} from "script/Interact
 
 // when we deploy to an actual testnet - such as sepolia - this script is the only thing we gonna run!
 contract DeployRaffle is Script {
-    function run() public {}  // ?? why is this needed? shouldnt deploy contract below be in that run function as the run function is always run in the script?
+    function run() public {
+        // the run function here is just so we could run this Deploy Raffle Script as a standalone script!
+        deployContract();
+
+    }  // ?? why is this needed? shouldnt deploy contract below be in that run function as the run function is always run in the script?
 
     function deployContract() public returns (Raffle, HelperConfig) {
         HelperConfig helperConfig = new HelperConfig();
